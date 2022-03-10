@@ -20,8 +20,10 @@ def configure_app():
 if __name__ == '__main__':
     configure_db(drop=True)
     configure_app()
-    uvicorn.run(application,
-                port=8000,
-                host='127.0.0.1')
+    uvicorn.run(
+        application,
+        port=8000,
+        host='127.0.0.1',
+    )
 else:
     configure_app()

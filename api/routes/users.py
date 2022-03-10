@@ -8,18 +8,27 @@ from api.dependencies import get_db
 router = APIRouter()
 
 
-@router.get('/{user_id}',
-            response_model=User)
-def get_user(user_id: int,
-             db: Session = Depends(get_db)):
-    return crud_users.get_user(db=db,
-                               user_id=user_id)
+@router.get(
+    '/{user_id}',
+    response_model=User,
+)
+def get_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+):
+    return crud_users.get_user(
+        db=db,
+        user_id=user_id,
+    )
 
 
-@router.post('/',
-             response_class=JSONResponse)
+@router.post(
+    '/',
+    response_class=JSONResponse,
+)
 def create_user(
-        db: Session = Depends(get_db)):
+        db: Session = Depends(get_db),
+):
     return crud_users.create_user(db=db)
 
 
@@ -28,9 +37,15 @@ def upd_user():
     pass
 
 
-@router.delete('/{user_id}',
-               response_class=JSONResponse)
-def del_user(user_id: int,
-             db: Session = Depends(get_db)):
-    return crud_users.del_user(db=db,
-                               user_id=user_id)
+@router.delete(
+    '/{user_id}',
+    response_class=JSONResponse,
+)
+def del_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+):
+    return crud_users.del_user(
+        db=db,
+        user_id=user_id,
+    )

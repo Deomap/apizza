@@ -4,7 +4,7 @@ from typing import Optional
 
 class OrderBase(BaseModel):
     type: str
-    delivery_adds: Optional[int] = None
+    delivery_adds: Optional[int]
     status: str
 
 

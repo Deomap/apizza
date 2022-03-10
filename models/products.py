@@ -13,7 +13,7 @@ class ProductCreate(ProductBase):
 
 class Product(ProductBase):
     id: int
-    order_id: int
+    order_id: Optional[int]
 
     class Config:
         orm_mode = True
