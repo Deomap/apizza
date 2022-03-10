@@ -1,12 +1,12 @@
 from pydantic import BaseModel
-from .products import Product
+from .products import OrderProduct
 
 
 class OrderBase(BaseModel):
     type: str
     delivery_adds: int | None
     status: str
-    products: list[Product]
+    products: list[OrderProduct]
 
 
 class OrderCreate(OrderBase):
@@ -19,5 +19,3 @@ class Order(OrderBase):
 
     class Config:
         orm_mode = True
-
-# заказ: создать (оплата), обновить(трекинг), удалить, чтение(курьер, кухня)

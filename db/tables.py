@@ -24,16 +24,21 @@ class Order(Base):
     type = Column(String)
     status = Column(String)
 
-    products = relationship("Product", back_populates="order_ref")
+    products = relationship("OrderProduct", back_populates="order_ref")
     user_ref = relationship("User", back_populates="orders")
 
 
 class Product(Base):
-    __tablename__ = "products"
+    __abstract__ = True
+
+    name = Column(String)
+    price = Column(Float)
+
+
+class OrderProduct(Product):
+    __tablename__ = "order_products"
 
     id = Column(Integer, primary_key=True)
     order_id = Column(Integer, ForeignKey("orders.id"))
-    name = Column(String)
-    price = Column(Float)
 
     order_ref = relationship("Order", back_populates="products")

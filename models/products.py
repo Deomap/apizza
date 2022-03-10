@@ -12,6 +12,12 @@ class ProductCreate(ProductBase):
 
 class Product(ProductBase):
     id: int | None
+
+    class Config:
+        orm_mode = True
+
+
+class OrderProduct(ProductBase):
     order_id: int | None
 
     class Config:

@@ -24,7 +24,7 @@ def create_order(
         delivery_adds=order.delivery_adds,
     )
     for product in order.products:
-        orm_product = tables.Product(**dict(product))
+        orm_product = tables.OrderProduct(**dict(product))
         db_order.products.append(orm_product)
     try:
         db.add(db_order)
