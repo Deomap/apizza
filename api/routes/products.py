@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from db.crud import products as crud_products
-from models.products import ProductCreate, Product
+from models.product import ProductCreate, Product
 from sqlalchemy.orm import Session
 from api.dependencies import get_db
 

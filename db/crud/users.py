@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from models.users import User, UserCreate, UserBase
+from models.user import User, UserCreate, UserBase
 from db import tables
 
 

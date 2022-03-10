@@ -2,7 +2,8 @@ from pydantic import BaseModel
 
 
 class UserBase(BaseModel):
-    is_active: bool = True
+    is_guest: bool
+    is_active: bool
 
 
 class UserCreate(UserBase):

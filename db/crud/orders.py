@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from models.orders import OrderCreate, Order
+from models.order import OrderCreate, Order
 from db import tables
 
 

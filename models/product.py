@@ -22,3 +22,10 @@ class OrderProduct(ProductBase):
 
     class Config:
         orm_mode = True
+
+
+class PizzeriaProduct(ProductBase):
+    pizzeria_id: int | None
+
+    class Config:
+        orm_mode = True

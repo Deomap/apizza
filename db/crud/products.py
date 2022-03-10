@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from models.products import ProductCreate, Product
+from models.product import ProductCreate, Product
 from db import tables
 
 
