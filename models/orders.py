@@ -1,11 +1,12 @@
 from pydantic import BaseModel
-from typing import Optional
+from products import Product
 
 
 class OrderBase(BaseModel):
     type: str
-    delivery_adds: Optional[int]
+    delivery_adds: int | None
     status: str
+    products: list[Product]
 
 
 class OrderCreate(OrderBase):

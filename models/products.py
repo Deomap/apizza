@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Optional
 
 
 class ProductBase(BaseModel):
@@ -13,7 +12,7 @@ class ProductCreate(ProductBase):
 
 class Product(ProductBase):
     id: int
-    order_id: Optional[int]
+    order_id: int | None
 
     class Config:
         orm_mode = True
