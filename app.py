@@ -1,24 +1,26 @@
 from fastapi import FastAPI
 import uvicorn
-from api import routes
-from db import crud, models
+from api.routes import api
+from db import tables
 from db.database import engine
 
-api = FastAPI()
+application = FastAPI()
 
 
-def configure_db():
-    models.Base.metadata.create_all(bind=engine)
+def configure_db(drop):
+    if drop:
+        tables.Base.metadata.drop_all(bind=engine)
+    tables.Base.metadata.create_all(bind=engine)
 
 
 def configure_app():
-    api.include_router(routes.router)
+    application.include_router(api.router)
 
 
 if __name__ == '__main__':
-    configure_db()
+    configure_db(drop=True)
     configure_app()
-    uvicorn.run(api,
+    uvicorn.run(application,
                 port=8000,
                 host='127.0.0.1')
 else:

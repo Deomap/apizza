@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime
 from sqlalchemy.orm import relationship
-from typing import Optional
+import datetime
 
 from .database import Base
 
@@ -19,9 +19,10 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
-    date = Column(DateTime)
+    date = Column(DateTime, default=datetime.datetime.now())
     delivery_adds = Column(String)
     type = Column(String)
+    status = Column(String)
 
     products = relationship("Product", back_populates="order_ref")
     user_ref = relationship("User", back_populates="orders")
