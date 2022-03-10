@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from products import Product
+from .products import Product
 
 
 class OrderBase(BaseModel):

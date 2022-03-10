@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from models.orders import OrderBase, OrderCreate, Order
+from models.orders import OrderCreate, Order
 from db import tables
 
 
@@ -23,6 +23,9 @@ def create_order(
         status=order.status,
         delivery_adds=order.delivery_adds,
     )
+    for product in order.products:
+        orm_product = tables.Product(**dict(product))
+        db_order.products.append(orm_product)
     try:
         db.add(db_order)
         db.commit()

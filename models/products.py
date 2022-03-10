@@ -11,7 +11,7 @@ class ProductCreate(ProductBase):
 
 
 class Product(ProductBase):
-    id: int
+    id: int | None
     order_id: int | None
 
     class Config:
