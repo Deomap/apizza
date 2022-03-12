@@ -32,9 +32,20 @@ def create_pizzeria(
     return crud_pizzerias.create_pizzeria(db=db)
 
 
-@router.put('/')
-def upd_pizzeria():
-    pass
+@router.put(
+    '/',
+    response_class=JSONResponse,
+)
+def upd_pizzeria(
+    pizzeria_id: int,
+    pizzeria: PizzeriaCreate,
+    db: Session = Depends(get_db),
+):
+    return crud_pizzerias.upd_pizzeria(
+        db=db,
+        pizzeria=pizzeria,
+        pizzeria_id=pizzeria_id,
+    )
 
 
 @router.delete(

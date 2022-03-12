@@ -38,9 +38,20 @@ def create_order(
     )
 
 
-@router.put('/')
-def upd_order():
-    pass
+@router.put(
+    '/',
+    response_class=JSONResponse,
+)
+def upd_order(
+    order_id: int,
+    order: OrderCreate,
+    db: Session = Depends(get_db),
+):
+    return crud_orders.upd_order(
+        db=db,
+        order=order,
+        order_id=order_id,
+    )
 
 
 @router.delete(

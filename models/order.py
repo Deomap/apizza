@@ -4,7 +4,7 @@ from .product import OrderProduct
 
 class OrderBase(BaseModel):
     type: str
-    delivery_adds: int | None
+    delivery_adds: str | None
     status: str
     products: list[OrderProduct]
 

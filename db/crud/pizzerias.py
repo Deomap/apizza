@@ -23,8 +23,27 @@ def create_pizzeria(db: Session):
     return {db_pizzeria.id: "OK"}
 
 
-def upd_pizzeria():
-    pass
+def upd_pizzeria(
+        db: Session,
+        pizzeria,
+        pizzeria_id,
+):
+    pizzeria = dict(pizzeria)
+    db_query = db.query(tables.Pizzeria)\
+        .filter(tables.Pizzeria.id == pizzeria_id)
+    db_obj = db_query.first()
+
+    db_obj.products.clear()
+    for product in pizzeria['products']:
+        orm_object = tables.PizzeriaProduct(**dict(product))
+        db_obj.products.append(orm_object)
+    del pizzeria['products']
+    db.refresh(db_obj)
+
+    db_query.update(pizzeria)
+
+    db.commit()
+    return {pizzeria_id: "OK"}
 
 
 def del_pizzeria(

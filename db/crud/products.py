@@ -29,7 +29,7 @@ def create_product(
     return {db_product.id: "OK"}
 
 
-def upd_product(db: Session, user_id: int):
+def upd_product(db: Session, p: int):
     pass
 
 

@@ -23,8 +23,19 @@ def create_user(db: Session):
     return {db_user.id: "OK"}
 
 
-def upd_user():
-    pass
+def upd_user(
+        db: Session,
+        user_id: int,
+        user: User,
+):
+    try:
+        user = dict(user)
+        db.query(tables.User) \
+            .filter(tables.User.id == user_id).update(user)
+        db.commit()
+    except:
+        return {user_id: "OK"}
+    return {user_id: "OK"}
 
 
 def del_user(

@@ -32,9 +32,20 @@ def create_user(
     return crud_users.create_user(db=db)
 
 
-@router.put('/')
-def upd_user():
-    pass
+@router.put(
+    '/',
+    response_class=JSONResponse,
+)
+def upd_user(
+        user_id: int,
+        user: User,
+        db: Session = Depends(get_db),
+):
+    return crud_users.upd_user(
+        db=db,
+        user_id=user_id,
+        user=user,
+    )
 
 
 @router.delete(
