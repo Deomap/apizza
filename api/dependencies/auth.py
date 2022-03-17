@@ -3,10 +3,9 @@ import hmac
 import os
 
 from fastapi import Depends, HTTPException, status, Request
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
-oauth2_reg = OAuth2PasswordBearer(tokenUrl="auth/register")
 
 
 def hash_password(password: str):
@@ -23,8 +22,4 @@ def is_correct_password(salt: bytes, pw_hash: bytes, password: str) -> bool:
 
 
 def verify_token(token: str = Depends(oauth2_scheme)):
-    return token
-
-
-def register(token: str = Depends(oauth2_reg)):
     return token
