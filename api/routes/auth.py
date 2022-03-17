@@ -1,17 +1,21 @@
 from fastapi import APIRouter, Depends, HTTPException, Security
+from datetime import timedelta
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from api.dependencies.dependencies import get_db
-from api.dependencies.auth import is_correct_password
+from api.dependencies.auth import verify_password, create_access_token
 from db.crud import users as crud_users
-from models.user import UserInAuth
+from models.user import Token
 
 router = APIRouter()
 
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
 
 # USERNAME is EMAIL
-@router.get(
+@router.post(
     "/token",
+    response_model=Token,
 )
 def login(
         db: Session = Depends(get_db),
@@ -27,18 +31,21 @@ def login(
             detail="Incorrect username or password",
         )
 
-    user = UserInAuth(**db_user)
-    if not is_correct_password(
-        salt=user.salt,
-        pw_hash=user.hashed_password,
-        password=form_data.password,
+    if not verify_password(
+        plain_password=form_data.password,
+        hashed_password=db_user.hashed_password,
     ):
         raise HTTPException(
             status_code=400,
             detail="Incorrect username or password",
         )
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": str(db_user.id)},
+        expires_delta=access_token_expires,
+    )
 
     return {
-        "user_id": user.id,
-        "token_type": "bearer"
+        "access_token": access_token,
+        "token_type": "bearer",
     }

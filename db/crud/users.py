@@ -28,7 +28,6 @@ def create_user(
         forename=user.forename,
         type=user.type,
         hashed_password=user.hashed_password,
-        hpw_salt=user.salt,
         email=user.email,
     )
     try:

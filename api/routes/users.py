@@ -19,7 +19,6 @@ def get_user(
     auth: str = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
-    print(auth)
     return crud_users.get_user(
         db=db,
         user_id=user_id,
@@ -34,9 +33,10 @@ def create_user(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
 ):
+    email = form_data.username
     db_user = crud_users.get_user_by_email(
         db=db,
-        email=form_data.username,
+        email=email,
     )
     if db_user:
         raise HTTPException(
@@ -44,9 +44,9 @@ def create_user(
             detail="Email already exists",
         )
 
-    salt, hashed_password = hash_password(form_data.password)
+    hashed_password = hash_password(form_data.password)
     user = UserInAuth(
-        salt=salt,
+        email=email,
         hashed_password=hashed_password,
     )
     crud_response = crud_users.create_user(

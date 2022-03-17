@@ -11,20 +11,20 @@ class UserTypes(Enum):
     PIZZERIA = "pizzeria"
     AUTHED_USER = "authed_user"
     INACTIVE = "inactive"
+    GUEST = "guest"
 
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True)
     pizzeria_ref = Column(Integer, ForeignKey("pizzerias.id"))
 
-    type = Column(String)
+    type = Column(String, default="authed_user")
     forename = Column(String)  # first name
     email = Column(String)
 
-    hashed_password = Column(LargeBinary)
-    hpw_salt = Column(LargeBinary)
+    hashed_password = Column(String)
 
     orders = relationship("Order", back_populates="user_ref")
 
