@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Security
 from fastapi.responses import JSONResponse
 from db.crud import pizzerias as crud_pizzerias
 from models.pizzeria import Pizzeria, PizzeriaCreate
@@ -15,7 +15,12 @@ router = APIRouter()
 )
 def get_pizzeria(
     pizzeria_id: int,
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'authed',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_pizzerias.get_pizzeria(
@@ -29,7 +34,12 @@ def get_pizzeria(
     response_class=JSONResponse,
 )
 def create_pizzeria(
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'direction',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_pizzerias.create_pizzeria(db=db)
@@ -42,7 +52,12 @@ def create_pizzeria(
 def upd_pizzeria(
     pizzeria_id: int,
     pizzeria: PizzeriaCreate,
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'pizzeria',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_pizzerias.upd_pizzeria(
@@ -58,7 +73,12 @@ def upd_pizzeria(
 )
 def del_pizzeria(
     pizzeria_id: int,
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'direction',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_pizzerias.del_pizzeria(

@@ -26,7 +26,6 @@ def create_user(
 ):
     db_user = tables.User(
         forename=user.forename,
-        type=user.type,
         hashed_password=user.hashed_password,
         email=user.email,
     )

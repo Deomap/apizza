@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Security
 from fastapi.responses import JSONResponse
 from db.crud import products as crud_products
 from models.product import ProductCreate, Product
@@ -15,7 +15,12 @@ router = APIRouter()
 )
 def get_product(
     product_id: int,
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'authed',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_products.get_product(
@@ -30,7 +35,12 @@ def get_product(
 )
 def create_product(
     product: ProductCreate,
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'direction',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_products.create_product(
@@ -50,7 +60,12 @@ def upd_product():
 )
 def del_product(
     product_id: int,
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'direction',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_products.del_product(

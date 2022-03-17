@@ -18,7 +18,7 @@ def configure_app():
 
 
 if __name__ == '__main__':
-    configure_db(drop=True)
+    configure_db(drop=False)
     configure_app()
     uvicorn.run(
         application,

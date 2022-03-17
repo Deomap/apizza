@@ -6,21 +6,12 @@ import datetime
 from .database import Base
 
 
-class UserTypes(Enum):
-    DIRECTION = "direction"
-    PIZZERIA = "pizzeria"
-    AUTHED_USER = "authed_user"
-    INACTIVE = "inactive"
-    GUEST = "guest"
-
-
 class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
     pizzeria_ref = Column(Integer, ForeignKey("pizzerias.id"))
 
-    type = Column(String, default="authed_user")
     forename = Column(String)  # first name
     email = Column(String)
 

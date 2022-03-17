@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Security
 from fastapi.responses import JSONResponse
 from db.crud import orders as crud_orders
 from models.order import Order, OrderCreate
@@ -15,7 +15,12 @@ router = APIRouter()
 )
 def get_order(
     order_id: int,
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'authed',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_orders.get_order(
@@ -31,7 +36,12 @@ def get_order(
 def create_order(
     user_id: int,
     order: OrderCreate,
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'authed',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_orders.create_order(
@@ -48,7 +58,12 @@ def create_order(
 def upd_order(
     order_id: int,
     order: OrderCreate,
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'pizzeria',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_orders.upd_order(
@@ -64,7 +79,12 @@ def upd_order(
 )
 def del_order(
     order_id: int,
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'pizzeria',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_orders.del_order(

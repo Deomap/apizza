@@ -2,7 +2,6 @@ from pydantic import BaseModel
 
 
 class UserBase(BaseModel):
-    type: str | None
     forename: str | None
     email: str | None
 
@@ -29,3 +28,4 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
+    scopes: list[str] = []

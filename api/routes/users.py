@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Security
 from fastapi.responses import JSONResponse
 from db.crud import users as crud_users
 from models.user import User, UserInAuth
@@ -16,7 +16,12 @@ router = APIRouter()
 )
 def get_user(
     user_id: int,
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'authed',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_users.get_user(
@@ -61,10 +66,15 @@ def create_user(
     response_class=JSONResponse,
 )
 def upd_user(
-        user_id: int,
-        user: User,
-        auth: str = Depends(verify_token),
-        db: Session = Depends(get_db),
+    user_id: int,
+    user: User,
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'authed',
+        ]
+    ),
+    db: Session = Depends(get_db),
 ):
     return crud_users.upd_user(
         db=db,
@@ -79,7 +89,12 @@ def upd_user(
 )
 def del_user(
     user_id: int,
-    auth: str = Depends(verify_token),
+    auth: str = Security(
+        verify_token,
+        scopes=[
+            'authed',
+        ]
+    ),
     db: Session = Depends(get_db),
 ):
     return crud_users.del_user(
