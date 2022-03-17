@@ -2,12 +2,14 @@ from pydantic import BaseModel
 
 
 class UserBase(BaseModel):
-    is_guest: bool
-    is_active: bool
+    type: str | None
+    forename: str | None
+    email: str | None
 
 
-class UserCreate(UserBase):
-    pass
+class UserInAuth(UserBase):
+    hashed_password: bytes | None
+    salt: bytes | None
 
 
 class User(UserBase):

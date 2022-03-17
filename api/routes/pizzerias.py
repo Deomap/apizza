@@ -3,7 +3,8 @@ from fastapi.responses import JSONResponse
 from db.crud import pizzerias as crud_pizzerias
 from models.pizzeria import Pizzeria, PizzeriaCreate
 from sqlalchemy.orm import Session
-from api.dependencies import get_db
+from api.dependencies.dependencies import get_db
+from api.dependencies.auth import verify_token
 
 router = APIRouter()
 
@@ -14,6 +15,7 @@ router = APIRouter()
 )
 def get_pizzeria(
     pizzeria_id: int,
+    auth: str = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
     return crud_pizzerias.get_pizzeria(
@@ -27,7 +29,8 @@ def get_pizzeria(
     response_class=JSONResponse,
 )
 def create_pizzeria(
-        db: Session = Depends(get_db),
+    auth: str = Depends(verify_token),
+    db: Session = Depends(get_db),
 ):
     return crud_pizzerias.create_pizzeria(db=db)
 
@@ -39,6 +42,7 @@ def create_pizzeria(
 def upd_pizzeria(
     pizzeria_id: int,
     pizzeria: PizzeriaCreate,
+    auth: str = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
     return crud_pizzerias.upd_pizzeria(
@@ -54,6 +58,7 @@ def upd_pizzeria(
 )
 def del_pizzeria(
     pizzeria_id: int,
+    auth: str = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
     return crud_pizzerias.del_pizzeria(

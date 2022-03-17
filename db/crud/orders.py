@@ -27,7 +27,7 @@ def create_order(
         orm_product = tables.OrderProduct(**dict(product))
         db_order.products.append(orm_product)
     try:
-        db.add(db_order)
+        db.add(db_order) 
         db.commit()
     except:
         return {user_id: "error"}

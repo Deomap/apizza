@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from db.crud import users as crud_users
-from models.user import UserCreate, User
+from models.user import User
 from sqlalchemy.orm import Session
-from api.dependencies import get_db
+from api.dependencies.dependencies import get_db
+from api.dependencies.auth import verify_token, register
 
 router = APIRouter()
 
@@ -14,8 +15,10 @@ router = APIRouter()
 )
 def get_user(
     user_id: int,
+    auth: str = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
+    print(auth)
     return crud_users.get_user(
         db=db,
         user_id=user_id,
@@ -27,9 +30,9 @@ def get_user(
     response_class=JSONResponse,
 )
 def create_user(
-        db: Session = Depends(get_db),
+        auth: str = Depends(register),
 ):
-    return crud_users.create_user(db=db)
+    return auth
 
 
 @router.put(
@@ -39,6 +42,7 @@ def create_user(
 def upd_user(
         user_id: int,
         user: User,
+        auth: str = Depends(verify_token),
         db: Session = Depends(get_db),
 ):
     return crud_users.upd_user(
@@ -54,6 +58,7 @@ def upd_user(
 )
 def del_user(
     user_id: int,
+    auth: str = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
     return crud_users.del_user(

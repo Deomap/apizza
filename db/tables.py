@@ -1,16 +1,30 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime
+from enum import Enum
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime, LargeBinary
 from sqlalchemy.orm import relationship
 import datetime
 
 from .database import Base
 
 
+class UserTypes(Enum):
+    DIRECTION = "direction"
+    PIZZERIA = "pizzeria"
+    AUTHED_USER = "authed_user"
+    INACTIVE = "inactive"
+
+
 class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    is_active = Column(Boolean, default=True)
-    is_guest = Column(Boolean, default=False)
+    pizzeria_ref = Column(Integer, ForeignKey("pizzerias.id"))
+
+    type = Column(String)
+    forename = Column(String)  # first name
+    email = Column(String)
+
+    hashed_password = Column(LargeBinary)
+    hpw_salt = Column(LargeBinary)
 
     orders = relationship("Order", back_populates="user_ref")
 
@@ -32,6 +46,7 @@ class Order(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     pizzeria_id = Column(Integer, ForeignKey("pizzerias.id"))
+
     date = Column(DateTime, default=datetime.datetime.now())
     delivery_adds = Column(String)
     type = Column(String)

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from models.user import User, UserCreate, UserBase
+from models.user import User, UserInAuth
 from db import tables
 
 
@@ -12,15 +12,35 @@ def get_user(
         .filter(tables.User.id == user_id).first()
 
 
-def create_user(db: Session):
-    db_user = tables.User()
+def get_user_by_email(
+    db: Session,
+    email: str,
+):
+    return db.query(tables.User)\
+        .filter(tables.User.email == email).first()
+
+
+def create_user(
+        user: UserInAuth,
+        db: Session,
+):
+    db_user = tables.User(
+        forename=user.forename,
+        type=user.type,
+        hashed_password=user.hashed_password,
+        hpw_salt=user.salt,
+        email=user.email,
+    )
     try:
         db.add(db_user)
         db.commit()
         db.refresh(db_user)
     except:
         return {"user": "error"}
-    return {db_user.id: "OK"}
+    return {
+        "response": "OK",
+        "user_id": db_user.id,
+    }
 
 
 def upd_user(
@@ -34,8 +54,14 @@ def upd_user(
             .filter(tables.User.id == user_id).update(user)
         db.commit()
     except:
-        return {user_id: "OK"}
-    return {user_id: "OK"}
+        return {
+            "response": "error",
+            "user_id": user_id,
+        }
+    return {
+        "response": "OK",
+        "user_id": user_id,
+    }
 
 
 def del_user(
@@ -48,5 +74,11 @@ def del_user(
         db.delete(db_user)
         db.commit()
     except:
-        return {user_id: "error"}
-    return {user_id: "OK"}
+        return {
+            "response": "error",
+            "user_id": user_id,
+        }
+    return {
+        "response": "OK",
+        "user_id": user_id,
+    }

@@ -3,7 +3,8 @@ from fastapi.responses import JSONResponse
 from db.crud import orders as crud_orders
 from models.order import Order, OrderCreate
 from sqlalchemy.orm import Session
-from api.dependencies import get_db
+from api.dependencies.dependencies import get_db
+from api.dependencies.auth import verify_token
 
 router = APIRouter()
 
@@ -14,6 +15,7 @@ router = APIRouter()
 )
 def get_order(
     order_id: int,
+    auth: str = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
     return crud_orders.get_order(
@@ -29,6 +31,7 @@ def get_order(
 def create_order(
     user_id: int,
     order: OrderCreate,
+    auth: str = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
     return crud_orders.create_order(
@@ -45,6 +48,7 @@ def create_order(
 def upd_order(
     order_id: int,
     order: OrderCreate,
+    auth: str = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
     return crud_orders.upd_order(
@@ -60,6 +64,7 @@ def upd_order(
 )
 def del_order(
     order_id: int,
+    auth: str = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
     return crud_orders.del_order(

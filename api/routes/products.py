@@ -3,7 +3,8 @@ from fastapi.responses import JSONResponse
 from db.crud import products as crud_products
 from models.product import ProductCreate, Product
 from sqlalchemy.orm import Session
-from api.dependencies import get_db
+from api.dependencies.dependencies import get_db
+from api.dependencies.auth import verify_token
 
 router = APIRouter()
 
@@ -14,6 +15,7 @@ router = APIRouter()
 )
 def get_product(
     product_id: int,
+    auth: str = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
     return crud_products.get_product(
@@ -28,6 +30,7 @@ def get_product(
 )
 def create_product(
     product: ProductCreate,
+    auth: str = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
     return crud_products.create_product(
@@ -46,8 +49,9 @@ def upd_product():
     response_class=JSONResponse,
 )
 def del_product(
-        product_id: int,
-        db: Session = Depends(get_db),
+    product_id: int,
+    auth: str = Depends(verify_token),
+    db: Session = Depends(get_db),
 ):
     return crud_products.del_product(
         db=db,
