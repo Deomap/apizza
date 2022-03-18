@@ -6,10 +6,12 @@ from api.dependencies.dependencies import get_db
 from api.dependencies.auth import verify_password, create_access_token
 from db.crud import users as crud_users
 from models.user import Token
+from api.cache import r_app
 
 router = APIRouter()
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+DEFAULT_SCOPES = ['authed']
 
 
 # USERNAME is EMAIL
@@ -40,10 +42,12 @@ def login(
             detail="Incorrect username or password",
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    scopes = form_data.scopes if form_data.scopes else DEFAULT_SCOPES
+    print(scopes)
     access_token = create_access_token(
         data={
             "sub": str(db_user.id),
-            "scopes": form_data.scopes,
+            "scopes": scopes,
         },
         expires_delta=access_token_expires,
     )

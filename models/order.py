@@ -7,6 +7,7 @@ class OrderBase(BaseModel):
     delivery_adds: str | None
     status: str
     products: list[OrderProduct]
+    price: float
 
 
 class OrderCreate(OrderBase):

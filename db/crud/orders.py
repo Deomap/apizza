@@ -12,6 +12,20 @@ def get_order(
         .filter(tables.Order.id == order_id).first()
 
 
+def get_all_orders(
+        db: Session,
+):
+    return db.query(tables.Order).all()
+
+
+def get_user_orders(
+        user_id: int,
+        db: Session,
+):
+    return db.query(tables.Order)\
+        .filter(tables.Order.user_id == user_id).all()
+
+
 def create_order(
     db: Session,
     order: OrderCreate,
@@ -22,6 +36,7 @@ def create_order(
         type=order.type,
         status=order.status,
         delivery_adds=order.delivery_adds,
+        price=order.price,
     )
     for product in order.products:
         orm_product = tables.OrderProduct(**dict(product))

@@ -16,7 +16,7 @@ router = APIRouter()
 )
 def get_user(
     user_id: int,
-    auth: str = Security(
+    auth=Security(
         verify_token,
         scopes=[
             'authed',
@@ -68,7 +68,7 @@ def create_user(
 def upd_user(
     user_id: int,
     user: User,
-    auth: str = Security(
+    auth=Security(
         verify_token,
         scopes=[
             'authed',
@@ -89,7 +89,7 @@ def upd_user(
 )
 def del_user(
     user_id: int,
-    auth: str = Security(
+    auth=Security(
         verify_token,
         scopes=[
             'authed',

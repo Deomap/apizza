@@ -42,6 +42,7 @@ class Order(Base):
     delivery_adds = Column(String)
     type = Column(String)
     status = Column(String)
+    price = Column(Float)
 
     products = relationship("OrderProduct", back_populates="order_ref")
     pizzeria_ref = relationship("Pizzeria", back_populates="orders")

@@ -15,10 +15,10 @@ router = APIRouter()
 )
 def get_pizzeria(
     pizzeria_id: int,
-    auth: str = Security(
+    auth=Security(
         verify_token,
         scopes=[
-            'authed',
+            # public
         ]
     ),
     db: Session = Depends(get_db),
@@ -34,7 +34,7 @@ def get_pizzeria(
     response_class=JSONResponse,
 )
 def create_pizzeria(
-    auth: str = Security(
+    auth=Security(
         verify_token,
         scopes=[
             'direction',
@@ -52,7 +52,7 @@ def create_pizzeria(
 def upd_pizzeria(
     pizzeria_id: int,
     pizzeria: PizzeriaCreate,
-    auth: str = Security(
+    auth=Security(
         verify_token,
         scopes=[
             'pizzeria',
@@ -73,7 +73,7 @@ def upd_pizzeria(
 )
 def del_pizzeria(
     pizzeria_id: int,
-    auth: str = Security(
+    auth=Security(
         verify_token,
         scopes=[
             'direction',

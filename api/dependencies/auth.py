@@ -13,8 +13,9 @@ SECRET_KEY = "dc485ef19c4e0c977bbb10d4bd031957e368cfb15f5f17198da7038ac3e41c54"
 ALGORITHM = "HS256"
 
 # Hierarchy:
-# Direction includes pizzeria and authed
-# pizzeria does not include authed
+# Direction includes pizzeria, authed, public
+# pizzeria includes public and auth
+# auth includes own and public
 # inactive has no permissions
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="auth/token",
@@ -22,11 +23,15 @@ oauth2_scheme = OAuth2PasswordBearer(
         "direction": "",
         "pizzeria": "",
         "authed": "",
-        "guest": "",
+        "own": "",
+        "public": "",
         "inactive": "",
     }
 )
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto"
+)
 
 
 def hash_password(password: str):
@@ -34,7 +39,10 @@ def hash_password(password: str):
 
 
 def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
+    return pwd_context.verify(
+        plain_password,
+        hashed_password
+    )
 
 
 def create_access_token(
@@ -47,7 +55,11 @@ def create_access_token(
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(
+        to_encode,
+        SECRET_KEY,
+        algorithm=ALGORITHM
+    )
     return encoded_jwt
 
 
@@ -98,4 +110,7 @@ def verify_token(
                 headers={"WWW-Authenticate": authenticate_value},
             )
 
-    return user
+    return {
+        "user": user,
+        "scopes": token_data.scopes,
+    }

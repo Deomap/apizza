@@ -15,7 +15,7 @@ router = APIRouter()
 )
 def get_order(
     order_id: int,
-    auth: str = Security(
+    auth=Security(
         verify_token,
         scopes=[
             'authed',
@@ -29,6 +29,29 @@ def get_order(
     )
 
 
+@router.get(
+    '/',
+    response_model=list[Order],
+)
+def get_all_orders(
+    auth=Security(
+        verify_token,
+        scopes=[
+            'authed',  # authed only for reading own orders
+        ]
+    ),
+    db: Session = Depends(get_db),
+):
+    if auth.get('scopes') == ['authed']:
+        return crud_orders.get_user_orders(
+            user_id=auth['user'].id,
+            db=db,
+        )
+    return crud_orders.get_all_orders(
+        db=db,
+    )
+
+
 @router.post(
     '/{order_id}',
     response_class=JSONResponse,
@@ -36,7 +59,7 @@ def get_order(
 def create_order(
     user_id: int,
     order: OrderCreate,
-    auth: str = Security(
+    auth=Security(
         verify_token,
         scopes=[
             'authed',
@@ -58,7 +81,7 @@ def create_order(
 def upd_order(
     order_id: int,
     order: OrderCreate,
-    auth: str = Security(
+    auth=Security(
         verify_token,
         scopes=[
             'pizzeria',
@@ -79,7 +102,7 @@ def upd_order(
 )
 def del_order(
     order_id: int,
-    auth: str = Security(
+    auth=Security(
         verify_token,
         scopes=[
             'pizzeria',
