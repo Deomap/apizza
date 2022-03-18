@@ -4,7 +4,7 @@ from api.routes import api
 from db import tables
 from db.database import engine
 
-application = FastAPI()
+app = FastAPI()
 
 
 def configure_db(drop):
@@ -14,14 +14,14 @@ def configure_db(drop):
 
 
 def configure_app():
-    application.include_router(api.router)
+    app.include_router(api.router)
 
 
 if __name__ == '__main__':
     configure_db(drop=False)
     configure_app()
     uvicorn.run(
-        application,
+        app,
         port=8000,
         host='127.0.0.1',
     )
