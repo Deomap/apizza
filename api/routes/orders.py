@@ -53,7 +53,7 @@ def get_all_orders(
 
 
 @router.post(
-    '/{order_id}',
+    '/{user_id}',
     response_class=JSONResponse,
 )
 def create_order(
