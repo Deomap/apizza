@@ -54,6 +54,7 @@ class Product(Base):
 
     name = Column(String)
     price = Column(Float)
+    amount = Column(Integer)  # for PizzeriaProduct == amount avbl
 
 
 class OrderProduct(Product):

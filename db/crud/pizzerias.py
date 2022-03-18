@@ -18,8 +18,8 @@ def create_pizzeria(db: Session):
         db.add(db_pizzeria)
         db.commit()
         db.refresh(db_pizzeria)
-    except:
-        return {"pizzeria": "error"}
+    except Exception as e:
+        return {"pizzeria": e.args}
     return {db_pizzeria.id: "OK"}
 
 

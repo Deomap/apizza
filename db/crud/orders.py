@@ -37,6 +37,7 @@ def create_order(
         status=order.status,
         delivery_adds=order.delivery_adds,
         price=order.price,
+        pizzeria_id=order.pizzeria_id,
     )
     for product in order.products:
         orm_product = tables.OrderProduct(**dict(product))

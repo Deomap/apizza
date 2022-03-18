@@ -8,6 +8,7 @@ class OrderBase(BaseModel):
     status: str
     products: list[OrderProduct]
     price: float
+    pizzeria_id: int
 
 
 class OrderCreate(OrderBase):
